@@ -1,5 +1,25 @@
 # VIM
 
+    vim +"copen" -q <(rg -n needle)
+
+    :'<,'>!tmux load-buffer <(cat -)
+
+    :'<,'>!tmux load-buffer $(cat -)
+
+    print(1 + 1)
+    :'<,'>!python
+    u
+
+https://unix.stackexchange.com/questions/604178/how-can-i-launch-fzf-inside-vim-and-open-the-selected-file-on-a-split-window
+
+function! SelectFile()
+  let tmp = tempname()
+  execute '!ls | fzf >'.tmp
+  let fname = readfile(tmp)[0]
+  silent execute '!rm '.tmp
+  execute 'vsplit '.fname
+endfunction
+
     https://thevaluable.dev/vim-adept/
     https://learnbyexample.github.io/vim_reference/Visual-mode.html
 
