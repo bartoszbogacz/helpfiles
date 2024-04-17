@@ -1,5 +1,20 @@
 # VIM
 
+```sh
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_frappe.vim" > catppuccin_frappe.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim" > catppuccin_latte.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_macchiato.vim" > catppuccin_macchiato.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_mocha.vim" > catppuccin_mocha.vim
+```
+
+```vimscript
+set termguicolors
+source catppuccin_mocha.vim
+syntax on
+```
+
+    :noremap aq :execute "normal ?\\n\\n\<lt>CR>++V/\\n\\n\<lt>CR>"<CR>
+
     vim +"copen" -q <(rg -n needle)
 
     :'<,'>!tmux load-buffer <(cat -)
@@ -19,6 +34,8 @@ function! SelectFile()
   silent execute '!rm '.tmp
   execute 'vsplit '.fname
 endfunction
+
+https://vim.fandom.com/wiki/Indent_text_object
 
     https://thevaluable.dev/vim-adept/
     https://learnbyexample.github.io/vim_reference/Visual-mode.html
