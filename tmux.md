@@ -1,5 +1,7 @@
 # TMUX
 
+https://github.com/rothgar/awesome-tmux
+
 ## TMUX
 
 Attach or create a new session          tmux new -As dev
