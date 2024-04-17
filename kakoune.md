@@ -3,7 +3,7 @@
     sudo zypper install gcc12-c++
     git clone https://github.com/mawww/kakoune.git
     cd kakoune
-    CXX=g++-12 make
+    make CXX=g++-12
     sudo make install
 
     https://github.com/mawww/kakoune#3-basic-interaction
