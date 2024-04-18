@@ -4,7 +4,7 @@ https://github.com/rothgar/awesome-tmux
 
 ```sh
 # Catppuccin
-# https://github.com/catppuccin/catppuccin/blob/main/docs/style-guide.md
+# https://github.com/catppuccin/catppuccin/tree/main
 set -g pane-border-style fg='#89b4fa'
 set -g pane-active-border-style fg='#f2cdcd'
 set -g status-style bg='#11111b',fg='#cdd6f4'
