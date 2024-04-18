@@ -3,14 +3,21 @@
 https://github.com/rothgar/awesome-tmux
 
 ```sh
+# Catppuccin
+# https://github.com/catppuccin/catppuccin/blob/main/docs/style-guide.md
+set -g pane-border-style fg='#89b4fa'
+set -g pane-active-border-style fg='#f2cdcd'
+set -g status-style bg='#11111b',fg='#cdd6f4'
+set -g message-style bg='#313244',fg='#cdd6f4'
+```
+
+```sh
 # Dracula
 # https://cassidy.codes/blog/2019-08-03-tmux-colour-theme/
-
 set -g pane-border-style fg='#6272a4'
 set -g pane-active-border-style fg='#ff79c6'
 set -g message-style bg='#44475a',fg='#8be9fd'
 set -g status-style bg='#44475a',fg='#bd93f9'
-
 # set-window-option -g window-status-style fg='#bd93f9',bg=default
 # set-window-option -g window-status-current-style fg='#ff79c6',bg='#282a36'
 ```
