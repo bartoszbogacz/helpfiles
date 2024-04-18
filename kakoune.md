@@ -13,6 +13,7 @@
     https://kakoune-editor.github.io/community-articles/2021/01/01/first_two_hours_in_two_minutes.html
     https://github.com/mawww/kakoune/blob/master/contrib/TRAMPOLINE
     https://phaazon.net/blog/more-hindsight-vim-helix-kakoune
+    https://phaazon.net/blog/kakoune-philosophy
 
 Write to `.config/kak/kakrc`.
 

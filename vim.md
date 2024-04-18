@@ -1,5 +1,34 @@
 # VIM
 
+```vimscript
+command Scratch setlocal buftype=nofile | setlocal bufhidden=hide
+
+set nocursorline
+autocmd InsertEnter * set cursorline
+autocmd InsertLeave * set nocursorline
+
+function! FuzzyGitGrep()
+    let tmp = tempname()
+    execute '!git grep -nr "" | fzf >'.tmp
+    let fname = split(readfile(tmp)[0], ":")
+    execute 'edit +'.fname[1] fname[0]
+endfunction
+
+function! FuzzyGitFind()
+    let tmp = tempname()
+    execute '!git ls-files | fzf >'.tmp
+    execute 'edit '.readfile(tmp)[0]
+endfunction
+
+command GG silent call FuzzyGitGrep() | redraw!
+command GF silent call FuzzyGitFind() | redraw!
+
+set grepprg=git\ grep\ -n
+set makeprg=mypy\ src
+
+set path=,.,src,test
+```
+
 ```sh
 curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_frappe.vim" > catppuccin_frappe.vim
 curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim" > catppuccin_latte.vim
