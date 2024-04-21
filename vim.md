@@ -320,7 +320,10 @@ i_CTRL-X CTRL-L
 
 :r!ssh dev cat grafana/build/Build_Atom_History/dashboard.json
 
-qa80|F iENTER> ESCq@a@@
+Macro (`qa`) to add `> ` to each line and break (`iENTER`) the line
+at whitespace (`F `) before column 80 (`80|`).
+
+    qa80|F iENTER> ESCq@a@@
 
 
 Word under cursor in commandline mode   c_CTRL-R CTRL-W
