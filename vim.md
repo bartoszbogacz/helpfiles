@@ -29,6 +29,10 @@ set makeprg=mypy\ src
 set path=,.,src,test
 ```
 
+Replace non-breaking spaces with spaces
+
+    :%s/<CTRL-V>u00a0/ /g
+
 ```sh
 curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_frappe.vim" > catppuccin_frappe.vim
 curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim" > catppuccin_latte.vim
