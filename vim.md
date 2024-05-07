@@ -1,5 +1,16 @@
 # VIM
 
+(Search for visually selected text)[https://vim.fandom.com/wiki/Search_for_visually_selected_text]
+
+```vimscript
+vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
+```
+
+```vimscript
+nnoremap <silent> vif ?def<CR>v/\n\n\n<CR><BS>
+nnoremap <silent> vin ?\n\n\n<CR>v/\n\n\n<CR><BS>
+```
+
 ```vimscript
 command Scratch setlocal buftype=nofile | setlocal bufhidden=hide
 
