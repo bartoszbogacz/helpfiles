@@ -1,22 +1,131 @@
-# VIM
+Configuration
+=============
 
-(Search for visually selected text)[https://vim.fandom.com/wiki/Search_for_visually_selected_text]
+On Linux "~/.vimrc" and "~/.gvimrc".
+On Windows "%USERPROFILE%\_vimrc" and "%USERPROFILE%\_gvimrc".
 
-```vimscript
-vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
-```
+### VIM Configuration {{{
 
-```vimscript
-nnoremap <silent> vif ?def<CR>v/\n\n\n<CR><BS>
-nnoremap <silent> vin ?\n\n\n<CR>v/\n\n\n<CR><BS>
-```
+" Do not modify any timeout settings, as usually suggested in example configs.
+" This results in having to press ESC twice to exit insert mode under tmux.
 
-```vimscript
+set nocompatible
+
+" On inserting a parenthesis matchparen jumps to its previous
+" match shortly to highlight it and distracts the user.
+" Prevent matchparen from loading by pretending it to be loaded.
+let loaded_matchparen = 1
+
+" Colors
+colorscheme slate
+syntax on
+
+" Indent
+set autoindent
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+
+" Wrap
+set wrap
+
+" Search
+set nowrapscan
+set hlsearch
+set incsearch
+
+set backspace=indent,eol,start
+set belloff=all
+set completeopt=menuone,longest
+set encoding=utf8
+set fileformats=unix,dos,mac
+set lazyredraw
+set list
+set listchars=tab:>-,trail:~,precedes:<,extends:>,nbsp:%
+set nobackup
+set nomodeline
+set noshowmatch
+set nostartofline
+set noswapfile
+set nowritebackup
+set number
+set path=.
+set ruler
+set scrolloff=5
+set showcmd
+set showmode
+set tags=tags
+set wildmode=list:longest
+
+" Convenient for typical python programs
+
+set grepprg=git\ grep\ -n
+set makeprg=mypy\ src
+set path=,.,src,tasks,test
+
+" When using VIM with "set nohidden" the ":Scratch" commands
+" allows unnamed buffers to be hidden.
+
 command Scratch setlocal buftype=nofile | setlocal bufhidden=hide
+
+" Highlight current line whe in insert mode.
 
 set nocursorline
 autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
+
+" Search for visually selected text [1]:
+" [1]: https://vim.fandom.com/wiki/Search_for_visually_selected_text
+
+vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" Select INNER function and INNER triple newline
+
+nnoremap <silent> vif ?def<CR>v/\n\n\n<CR><BS>
+nnoremap <silent> vin ?\n\n\n<CR>v/\n\n\n<CR><BS>
+
+}}}
+
+### GVIM Linux {{{
+
+set columns=100
+set guifont=Inconsolata\ 11
+set guioptions=!ac
+set lines=40
+
+colorscheme slate
+
+"nmap gx :execute 'silent! !xdg-open ' . shellescape(trim(getline(".")), 1)<CR>
+vnoremap <silent> gx :<C-U>execute 'silent !xdg-open ' . shellescape(trim(getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]), 1)<CR>
+
+}}}
+
+### GVIM Windows {{{
+
+set shell=C:\Windows\SysNative\cmd.exe
+
+set columns=100
+set guifont=Consolas:h12
+set guioptions=!ac
+set lines=40
+
+colorscheme desert
+
+" https://vi.stackexchange.com/questions/25456/how-can-i-change-the-colorscheme-of-the-vim-terminal-buffer
+let g:terminal_ansi_colors = [
+    \'#282828', '#CC241D', '#98971A', '#D79921',
+    \'#458588', '#B16286', '#689D6A', '#D65D0E',
+    \'#fb4934', '#b8bb26', '#fabd2f', '#83a598',
+    \'#d3869b', '#8ec07c', '#fe8019', '#FBF1C7']
+
+highlight Terminal guibg='#282828' guifg='#ebdbb2'
+
+" nmap gx :execute 'silent! !start ' . shellescape(expand("<cfile>"), 1)<CR>
+vnoremap <silent> gx :<C-U>execute 'silent !start ' . shellescape(trim(getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]), 1)<CR>
+
+}}}
+
+### FZF -- Fuzzy Finder {{{
 
 function! FuzzyGitGrep()
     let tmp = tempname()
@@ -34,28 +143,55 @@ endfunction
 command GG silent call FuzzyGitGrep() | redraw!
 command GF silent call FuzzyGitFind() | redraw!
 
-set grepprg=git\ grep\ -n
-set makeprg=mypy\ src
+function! SelectFile()
+  let tmp = tempname()
+  execute '!ls | fzf >'.tmp
+  let fname = readfile(tmp)[0]
+  silent execute '!rm '.tmp
+  execute 'vsplit '.fname
+endfunction
 
-set path=,.,src,test
-```
+}}}
+
+### Colors {{{
+
+    Download catppuccin to ~/.vim/colors on Linux
+
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_frappe.vim" > ~/.vim/colors/catppuccin_frappe.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim" > ~/.vim/colors/catppuccin_latte.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_macchiato.vim" > ~/.vim/colors/catppuccin_macchiato.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_mocha.vim" > ~/.vim/colors/catppuccin_mocha.vim
+
+    Download catppuccin to %USERPROFILE%\.vim\colors on Windows (using cmd)
+
+mkdir -p %USERPROFILE%\.vim\colors
+
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_frappe.vim" > %USERPROFILE%\vimfiles\colors\catppuccin_frappe.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim" > %USERPROFILE%\vimfiles\colors\catppuccin_latte.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_macchiato.vim" > %USERPROFILE%\vimfiles\colors\catppuccin_macchiato.vim
+curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_mocha.vim" > %USERPROFILE%\vimfiles\colors\catppuccin_mocha.vim
+
+    Configure VIM to use colors in TMUX
+
+set termguicolors
+source catppuccin_mocha
+syntax on
+
+}}}
+
+### Snippets {{{
+
+}}}
+
+### Movement {{{
+
+}}}
+
+## Tips and tricks
 
 Replace non-breaking spaces with spaces
 
     :%s/<CTRL-V>u00a0/ /g
-
-```sh
-curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_frappe.vim" > catppuccin_frappe.vim
-curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_latte.vim" > catppuccin_latte.vim
-curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_macchiato.vim" > catppuccin_macchiato.vim
-curl "https://raw.githubusercontent.com/catppuccin/vim/main/colors/catppuccin_mocha.vim" > catppuccin_mocha.vim
-```
-
-```vimscript
-set termguicolors
-source catppuccin_mocha.vim
-syntax on
-```
 
     :noremap aq :execute "normal ?\\n\\n\<lt>CR>++V/\\n\\n\<lt>CR>"<CR>
 
@@ -70,14 +206,6 @@ syntax on
     u
 
 https://unix.stackexchange.com/questions/604178/how-can-i-launch-fzf-inside-vim-and-open-the-selected-file-on-a-split-window
-
-function! SelectFile()
-  let tmp = tempname()
-  execute '!ls | fzf >'.tmp
-  let fname = readfile(tmp)[0]
-  silent execute '!rm '.tmp
-  execute 'vsplit '.fname
-endfunction
 
 https://vim.fandom.com/wiki/Indent_text_object
 
@@ -107,111 +235,6 @@ https://vim.fandom.com/wiki/Indent_text_object
     :%s/ -- Begin search and replace
     <Ctrl-R>/ -- Paste "/ register
     /replacement/gc -- Replace g globally and ask for c confirmation
-
-## Configuration VIM
-
-On Linux `vim ~/.vimrc`. On Windows `vim %USERPROFILE%\_vimrc`.
-
-```vim
-" Do not modify any timeout settings, as usually suggested in example configs.
-" This results in having to press ESC twice to exit insert mode under tmux.
-
-set nocompatible
-
-" On inserting a parenthesis matchparen jumps to its previous
-" match shortly to highlight it and distracts the user.
-" Prevent matchparen from loading by pretending it to be loaded.
-let loaded_matchparen = 1
-
-" Colors
-colorscheme slate
-syntax on
-
-" Indent
-set autoindent
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-
-" Wrap
-set wrap
-
-" Search
-set nowrapscan
-set hlsearch
-set incsearch
-" set grepprg=git\ grep\ -n
-
-set backspace=indent,eol,start
-set belloff=all
-set completeopt=menuone,longest
-set encoding=utf8
-set fileformats=unix,dos,mac
-set lazyredraw
-set list
-set listchars=tab:>-,trail:~,precedes:<,extends:>,nbsp:%
-set nobackup
-set nomodeline
-set noshowmatch
-set nostartofline
-set noswapfile
-set nowritebackup
-set number
-set path=.
-set ruler
-set scrolloff=5
-set showcmd
-set showmode
-set tags=tags
-set wildmode=list:longest
-
-command Scratch setlocal buftype=nofile | setlocal bufhidden=hide
-
-set nocursorline
-autocmd InsertEnter * set cursorline
-autocmd InsertLeave * set nocursorline
-```
-
-## Configuration GVIM
-
-On Linux `vim ~/.gvimrc`.
-
-```vim
-set columns=100
-set guifont=Inconsolata\ 11
-set guioptions=!ac
-set lines=40
-
-colorscheme slate
-
-"nmap gx :execute 'silent! !xdg-open ' . shellescape(trim(getline(".")), 1)<CR>
-vnoremap <silent> gx :<C-U>execute 'silent !xdg-open ' . shellescape(trim(getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]), 1)<CR>
-```
-
-On Windows `vim %USERPROFILE%\_vimrc`.
-
-```vim
-set shell=C:\Windows\SysNative\cmd.exe
-
-set columns=100
-set guifont=Consolas:h12
-set guioptions=!ac
-set lines=40
-
-colorscheme desert
-
-" https://vi.stackexchange.com/questions/25456/how-can-i-change-the-colorscheme-of-the-vim-terminal-buffer
-let g:terminal_ansi_colors = [
-    \'#282828', '#CC241D', '#98971A', '#D79921',
-    \'#458588', '#B16286', '#689D6A', '#D65D0E',
-    \'#fb4934', '#b8bb26', '#fabd2f', '#83a598',
-    \'#d3869b', '#8ec07c', '#fe8019', '#FBF1C7']
-
-highlight Terminal guibg='#282828' guifg='#ebdbb2'
-
-" nmap gx :execute 'silent! !start ' . shellescape(expand("<cfile>"), 1)<CR>
-vnoremap <silent> gx :<C-U>execute 'silent !start ' . shellescape(trim(getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]), 1)<CR>
-```
 
 ## Assorted
 
