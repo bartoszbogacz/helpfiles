@@ -1,5 +1,7 @@
 # BASH
 
+Bash web server while true; do { echo -e 'HTTP/1.1 200 OK\r\n'; cat index.html; } | nc -l 8080; done
+
 Bash while loop                        while true; do hm init -fb Optimized 2>&1 | grep Initialization; done
 
 Bash stderr redirect must come after file redirect
