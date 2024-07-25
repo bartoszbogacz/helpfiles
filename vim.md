@@ -1,3 +1,5 @@
+Yank vimscript and source it: `y:@"`
+
 Configuration
 =============
 
@@ -6,6 +8,7 @@ On Windows "%USERPROFILE%\_vimrc" and "%USERPROFILE%\_gvimrc".
 
 ### VIM Configuration {{{
 
+```vimscript
 " Do not modify any timeout settings, as usually suggested in example configs.
 " This results in having to press ESC twice to exit insert mode under tmux.
 
@@ -17,7 +20,8 @@ set nocompatible
 let loaded_matchparen = 1
 
 " Colors
-colorscheme slate
+set termguicolors
+colorscheme catppuccin_mocha
 syntax on
 
 " Indent
@@ -57,46 +61,39 @@ set showmode
 set tags=tags
 set wildmode=list:longest
 
-" Convenient for typical python programs
+command Scratch setlocal buftype=nofile | setlocal bufhidden=hide
+
+let mapleader = " "
+nnoremap <leader>ty y<cr>:call system("tmux load-buffer -", @")<cr>
+nnoremap <leader>tp :let @" = system("tmux show-buffer")<cr>p
+nnoremap <leader>tP :let @" = system("tmux show-buffer")<cr>P
+vnoremap <leader>t2 "ty<cr>:call system("tmux send-keys -t 2 -l " . shellescape(@t))<cr>
+
+" set nocursorline
+" autocmd InsertEnter * set cursorline
+" autocmd InsertLeave * set nocursorline
+
+function! FuzzyGitGrep()
+    let tmp = tempname()
+    execute '!git grep -nr "" | fzf >'.tmp
+    let fname = split(readfile(tmp)[0], ":")
+    execute 'edit +'.fname[1] fname[0]
+endfunction
+
+function! FuzzyGitFind()
+    let tmp = tempname()
+    execute '!git ls-files | fzf >'.tmp
+    execute 'edit '.readfile(tmp)[0]
+endfunction
+
+command GG silent call FuzzyGitGrep() | redraw!
+command GF silent call FuzzyGitFind() | redraw!
 
 set grepprg=git\ grep\ -n
 set makeprg=mypy\ src
-set path=,.,src,tasks,test
 
-" When using VIM with "set nohidden" the ":Scratch" commands
-" allows unnamed buffers to be hidden.
-
-command Scratch setlocal buftype=nofile | setlocal bufhidden=hide
-
-" Highlight current line whe in insert mode.
-
-set nocursorline
-autocmd InsertEnter * set cursorline
-autocmd InsertLeave * set nocursorline
-
-" Search for visually selected text [1]:
-" [1]: https://vim.fandom.com/wiki/Search_for_visually_selected_text
-
-vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-" Select INNER function and INNER triple newline
-
-nnoremap <silent> vif ?def<CR>v/\n\n\n<CR><BS>
-nnoremap <silent> vin ?\n\n\n<CR>v/\n\n\n<CR><BS>
-
-}}}
-
-### GVIM Linux {{{
-
-set columns=100
-set guifont=Inconsolata\ 11
-set guioptions=!ac
-set lines=40
-
-colorscheme slate
-
-"nmap gx :execute 'silent! !xdg-open ' . shellescape(trim(getline(".")), 1)<CR>
-vnoremap <silent> gx :<C-U>execute 'silent !xdg-open ' . shellescape(trim(getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]), 1)<CR>
+set path=,.,src,test
+```
 
 }}}
 
@@ -188,6 +185,13 @@ syntax on
 }}}
 
 ## Tips and tricks
+
+Execute vimscript lines in buffer. More an example of how to use vimscript.
+
+    nnoremap <F2> :execute getline(".")<CR>
+    vnoremap <F2> :<C-u>for line in getline("'<", "'>") \| execute line \| endfor<CR>
+
+https://vi.stackexchange.com/questions/17606/vmap-and-visual-block-how-do-i-write-a-function-to-operate-once-for-the-entire
 
 Replace non-breaking spaces with spaces
 
