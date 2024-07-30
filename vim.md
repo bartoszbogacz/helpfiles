@@ -64,10 +64,15 @@ set wildmode=list:longest
 command Scratch setlocal buftype=nofile | setlocal bufhidden=hide
 
 let mapleader = " "
-nnoremap <leader>ty y<cr>:call system("tmux load-buffer -", @")<cr>
+nnoremap <leader>ty :call system("tmux load-buffer -", @")<cr>
 nnoremap <leader>tp :let @" = system("tmux show-buffer")<cr>p
 nnoremap <leader>tP :let @" = system("tmux show-buffer")<cr>P
-vnoremap <leader>t2 "ty<cr>:call system("tmux send-keys -t 2 -l " . shellescape(@t))<cr>
+" nnoremap <leader>t2 :call system("tmux send-keys -t 2 -l " . shellescape(@t))<cr>
+
+vnoremap <leader>ty y<cr>:call system("tmux load-buffer -", @")<cr>
+vnoremap <leader>tp :<C-u>let @" = system("tmux show-buffer")<cr>gvp
+vnoremap <leader>tP :<C-u>let @" = system("tmux show-buffer")<cr>gvP
+" vnoremap <leader>t2 "ty<cr>:call system("tmux send-keys -t 2 -l " . shellescape(@t))<cr>
 
 " set nocursorline
 " autocmd InsertEnter * set cursorline
